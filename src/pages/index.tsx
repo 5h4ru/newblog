@@ -1,8 +1,10 @@
-import { Box } from "@chakra-ui/react"
+import { NextPage } from "next"
+import { Header } from "../components/Header"
 
-export default function Home() {
+const Home: NextPage = () => {
   return (
-    <Box>
-    </Box>
+    <Header />
   )
 }
+
+export default Home
