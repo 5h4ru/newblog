@@ -3,7 +3,7 @@ import {
 } from "@chakra-ui/react"
 import parse from "html-react-parser"
 import { domToReact, HTMLReactParserOptions } from "html-react-parser"
-import hljs from "highlight.js/lib/core"
+import hljs from "highlight.js"
 import "highlight.js/styles/vs2015.css"
 
 type MarkdownTemplateProps = {
