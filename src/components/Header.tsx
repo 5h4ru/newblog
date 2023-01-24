@@ -9,14 +9,14 @@ export const Header: FC = () => {
   return (
     <Box px={4} bg={useColorModeValue("gray.100", "gray.900")}>
       <Container maxW="container.lg">
-        <Flex as="header" py="4" justifyContent="space-between" alignItems="center">
+        <Flex as="header" py="2" justifyContent="space-between" alignItems="center">
           <NextLink href="/" passHref>
-            <Heading as="h1" fontSize="2xl" cursor="pointer">
+            <Heading as="h1" fontSize="xl" cursor="pointer">
               dev.5h4ru.com
             </Heading>
           </NextLink>
-          <HStack as="nav" spacing="3">
-            <Button size="lg" onClick={toggleColorMode}>
+          <HStack as="nav" spacing="4">
+            <Button size="md" onClick={toggleColorMode}>
               {colorMode === "light" ? <MoonIcon /> : <SunIcon />}
             </Button>
             <NavLinks />

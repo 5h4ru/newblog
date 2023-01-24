@@ -14,7 +14,7 @@ const PostPage: NextPage<Props> = ({ allPostsData }) => {
   return (
     <>
       <Header />
-      <Container as="main" maxWidth="container.lg" marginTop="4" marginBottom="16">
+      <Container as="main" maxWidth="container.lg" pt="12">
         <Heading as="h2" fontSize="2xl" fontWeight="bold" mb="8">
           Posts
         </Heading>

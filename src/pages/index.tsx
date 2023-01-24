@@ -12,19 +12,17 @@ const Home: NextPage<Props> = () => {
   return (
     <>
       <Header />
-      <Container as="main" maxWidth="container.lg" marginTop="4" marginBottom="16">
-        <Heading as="h2" fontSize="2xl" fontWeight="bold" mb="8">
+      <Container as="main" maxWidth="container.lg" pt="12">
+        <Heading as="h2" fontSize="2xl" fontWeight="bold" lineHeight="shorter" mb="0.5rem">
           Home
         </Heading>
-        <Stack spacing={4}>
-          <Text fontSize="lg">Next.js + Chakra UI + Vercel でブログをリニューアル中</Text>
-          <Text>
-            <Link href="https://qlitre-weblog.com/next-microcms-blog-w-chakra-matome" isExternal>
-              このサイト <ExternalLinkIcon mx="2px" />
-            </Link>
-            を大いに参考にしています！
-          </Text>
-        </Stack>
+        <Text as="h3" fontSize="xl" fontWeight="bold" lineHeight="shorter" mb="0.5rem" mt="1.5rem">Next.js + Chakra UI + Vercel でブログをリニューアル中</Text>
+        <Text>
+          <Link href="https://qlitre-weblog.com/next-microcms-blog-w-chakra-matome" isExternal>
+            このサイト <ExternalLinkIcon mx="2px" />
+          </Link>
+          を大いに参考にしています！
+        </Text>
       </Container>
     </>
   )

@@ -17,12 +17,12 @@ const Post = ({ postData }: Props) => {
   return (
     <>
       <Header />
-      <Container as="main" maxW="container.lg" mt="4" mb="16">
-        <Stack spacing="8">
-          <Heading as="h1" fontSize="2xl" lineHeight={1.6} >
+      <Container as="main" maxW="container.lg" pt="12" >
+        <Stack>
+          <Heading as="h1" fontSize="3xl">
             {postData.title}
           </Heading>
-          <Text fontSize="xl" mt="2">
+          <Text>
             {postData.date}
           </Text>
         </Stack>
