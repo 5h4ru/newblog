@@ -1,6 +1,10 @@
-import { BoxProps, Box, Text, UnorderedList, OrderedList, ListItem, Heading, Link, Image } from "@chakra-ui/react"
+import {
+  BoxProps, Box, Text, UnorderedList, OrderedList, ListItem, Heading, Link, Image, Code as ChakraCode
+} from "@chakra-ui/react"
 import parse from "html-react-parser"
 import { domToReact, HTMLReactParserOptions } from "html-react-parser"
+import hljs from "highlight.js/lib/core"
+import "highlight.js/styles/vs2015.css"
 
 type MarkdownTemplateProps = {
   source: string
@@ -102,6 +106,23 @@ const img = {
   }
 }
 
+const code = {
+  props: {
+    fontSize: 'md',
+    px: "0.2em",
+    mx: "0.2rem",
+  },
+}
+
+const preCode = {
+  props: {
+    fontSize: "18px",
+  }
+}
+
+const languageSubset = ['js', 'html', 'css', 'xml', 'typescript', 'python'];
+
+
 const options: HTMLReactParserOptions = {
   replace: (domNode: any) => {
     if (domNode.type === "tag") {
@@ -170,6 +191,26 @@ const options: HTMLReactParserOptions = {
         return (
           <Image {...img.props} src={domNode.attribs.src} />
         )
+      }
+      if (domNode.name === 'code') {
+        // 通常のcodeタグとpre→codeタグを区別する
+        if (domNode.parent.name === 'pre') {
+          const highlightCode = hljs.highlightAuto(
+            domToReact(domNode.children) as string,
+            languageSubset,
+          ).value;
+          return (
+            <Box as="code" className="hljs" {...preCode.props}>
+              {parse(highlightCode)}
+            </Box>
+          );
+        } else {
+          return (
+            <ChakraCode {...code.props}>
+              {domToReact(domNode.children, options)}
+            </ChakraCode>
+          )
+        }
       }
     }
   }
