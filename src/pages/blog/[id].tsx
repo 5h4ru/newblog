@@ -3,6 +3,7 @@ import { getAllPostIds, getPostData } from "@/src/lib/posts";
 import { Container, Divider, Heading, Stack, Text } from "@chakra-ui/react";
 import { GetStaticPaths, GetStaticProps } from "next";
 import type { Post } from "../../modules"
+import { MarkdownPemplate } from "@/src/components/MarkdownTemplate";
 
 type Props = {
   postData: {
@@ -27,8 +28,7 @@ const Post = ({ postData }: Props) => {
         </Stack>
 
         <Divider marginY="8" />
-
-        <div dangerouslySetInnerHTML={{ __html: postData.contentHtml }} />
+        <MarkdownPemplate source={postData.contentHtml} />
       </Container>
     </>
   )
