@@ -1,4 +1,5 @@
 import { NextPage } from "next"
+import Head from "next/head"
 import { Header } from "../components/Header"
 import type { Post } from "../modules"
 import { Container, Heading, Link, Stack, Text } from "@chakra-ui/react"
@@ -11,6 +12,9 @@ type Props = {
 const Home: NextPage<Props> = () => {
   return (
     <>
+      <Head>
+        <title>new blog</title>
+      </Head>
       <Header />
       <Container as="main" maxWidth="container.lg" pt="12">
         <Heading as="h2" fontSize="2xl" fontWeight="bold" lineHeight="shorter" mb="0.5rem">

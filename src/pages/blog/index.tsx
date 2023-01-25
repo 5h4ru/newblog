@@ -5,6 +5,7 @@ import type { Post } from "../../modules"
 import { PostList } from "../../components/PostList"
 import { Container, Heading } from "@chakra-ui/react"
 import { Header } from "@/src/components/Header"
+import Head from "next/head"
 
 type Props = {
   allPostsData: Post[]
@@ -13,6 +14,9 @@ type Props = {
 const PostPage: NextPage<Props> = ({ allPostsData }) => {
   return (
     <>
+      <Head>
+        <title>Posts</title>
+      </Head>
       <Header />
       <Container as="main" maxWidth="container.lg" pt="12">
         <Heading as="h2" fontSize="2xl" fontWeight="bold" mb="8">

@@ -4,6 +4,7 @@ import { Container, Divider, Heading, Stack, Text } from "@chakra-ui/react";
 import { GetStaticPaths, GetStaticProps } from "next";
 import type { Post } from "../../modules"
 import { MarkdownPemplate } from "@/src/components/MarkdownTemplate";
+import Head from "next/head";
 
 type Props = {
   postData: {
@@ -16,6 +17,9 @@ type Props = {
 const Post = ({ postData }: Props) => {
   return (
     <>
+      <Head>
+        <title>{postData.title}</title>
+      </Head>
       <Header />
       <Container as="main" maxW="container.lg" pt="12" >
         <Stack>
