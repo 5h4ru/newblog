@@ -5,6 +5,7 @@ import { GetStaticPaths, GetStaticProps } from "next";
 import type { Post } from "../../modules"
 import { MarkdownPemplate } from "@/src/components/MarkdownTemplate";
 import Head from "next/head";
+import { Datetime } from "@/src/components/Datetime";
 
 type Props = {
   postData: {
@@ -26,12 +27,10 @@ const Post = ({ postData }: Props) => {
           <Heading as="h1" fontSize="3xl">
             {postData.title}
           </Heading>
-          <Text>
+          <Datetime>
             {postData.date}
-          </Text>
+          </Datetime>
         </Stack>
-
-        <Divider marginY="8" />
         <MarkdownPemplate source={postData.contentHtml} />
       </Container>
     </>
