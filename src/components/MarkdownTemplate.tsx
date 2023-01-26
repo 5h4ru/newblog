@@ -26,10 +26,6 @@ import { domToReact, HTMLReactParserOptions } from "html-react-parser"
 import hljs from "highlight.js"
 import "highlight.js/styles/github-dark-dimmed.css"
 
-type MarkdownTemplateProps = {
-  source: string
-} & BoxProps
-
 const h1 = {
   props: {
     mb: "8px",
@@ -292,6 +288,10 @@ const options: HTMLReactParserOptions = {
   }
 }
 
-export const MarkdownPemplate = (props: MarkdownTemplateProps) => {
-  return <Box {...props}>{parse(props.source, options)}</Box>
+type MarkdownTemplateProps = {
+  source: string
+} & BoxProps
+
+export const MarkdownPemplate = ({ source, ...props }: MarkdownTemplateProps) => {
+  return <Box {...props}>{parse(source, options)}</Box>
 }
