@@ -19,8 +19,8 @@ const PostPage: NextPage<Props> = ({ allPostsData }) => {
       </Head>
       <Header />
       <Container as="main" maxWidth="container.lg" pt="12">
-        <Heading as="h2" fontSize="2xl" fontWeight="bold" mb="8">
-          Posts
+        <Heading as="h1" fontSize="3xl" fontWeight="bold" mb="8">
+          投稿一覧
         </Heading>
         <PostList posts={allPostsData} />
       </Container>

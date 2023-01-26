@@ -1,13 +1,13 @@
 import { Box } from "@chakra-ui/react";
 import { ReactNode } from "react";
 
-type props = {
+type Props = {
     children: ReactNode,
 }
 
-export const Datetime = ({ children }: props) => {
+export const Datetime = ({ children }: Props) => {
     return (
-        <Box as="time" color="gray.500" fontWeight="lighter">
+        <Box as="time" color="gray.500">
             {children}
         </Box>
     )

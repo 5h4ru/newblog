@@ -20,11 +20,11 @@ import {
   TableCaption,
   TableContainer,
 } from "@chakra-ui/react"
+import { ExternalLinkIcon } from "@chakra-ui/icons"
 import parse from "html-react-parser"
 import { domToReact, HTMLReactParserOptions } from "html-react-parser"
 import hljs from "highlight.js"
-import "highlight.js/styles/vs2015.css"
-import { ExternalLinkIcon } from "@chakra-ui/icons"
+import "highlight.js/styles/github-dark-dimmed.css"
 
 type MarkdownTemplateProps = {
   source: string
@@ -121,7 +121,9 @@ const img = {
 
 const code = {
   props: {
-    borderRadius: "3px",
+    fontSize: ".8rem",
+    borderRadius: "6px",
+    px: "0.4rem",
   },
 }
 
@@ -130,6 +132,7 @@ const preCode = {
     mb: "1rem",
     fontSize: ".8rem",
     lineHeight: "1.4",
+    borderRadius: "6px",
   }
 }
 
