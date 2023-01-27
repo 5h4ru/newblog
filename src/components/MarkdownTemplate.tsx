@@ -53,6 +53,16 @@ const h3 = {
   },
 }
 
+const h4 = {
+  props: {
+    fontSize: "md",
+    fontWeight: "bold",
+    lineHeight: "shorter",
+    mb: "0.5rem",
+    mt: "1.5rem"
+  },
+}
+
 const hr = {
   props: {
     mt: "1.5rem",
@@ -155,6 +165,13 @@ const options: HTMLReactParserOptions = {
       if (domNode.name === "h3") {
         return (
           <Text as="h3" {...h3.props}>
+            {domToReact(domNode.children, options)}
+          </Text>
+        )
+      }
+      if (domNode.name === "h4") {
+        return (
+          <Text as="h4" {...h4.props}>
             {domToReact(domNode.children, options)}
           </Text>
         )
