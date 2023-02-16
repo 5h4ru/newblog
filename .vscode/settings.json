@@ -1,0 +1,17 @@
+{
+    "markdownlint.config": {
+        "MD033": false,
+        "MD034": false,
+    },
+    "[markdown]": {
+        "editor.formatOnSave": true,
+        "editor.unicodeHighlight.ambiguousCharacters": true,
+        "editor.unicodeHighlight.invisibleCharacters": true,
+        "editor.wordWrap": "on",
+        "editor.quickSuggestions": {
+            "comments": "off",
+            "strings": "off",
+            "other": "off"
+        }
+    },
+}
