@@ -2,9 +2,10 @@
     "markdownlint.config": {
         "MD033": false,
         "MD034": false,
+        "MD040": false,
     },
     "[markdown]": {
-        "editor.formatOnSave": true,
+        "editor.formatOnSave": false,
         "editor.unicodeHighlight.ambiguousCharacters": true,
         "editor.unicodeHighlight.invisibleCharacters": true,
         "editor.wordWrap": "on",
