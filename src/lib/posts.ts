@@ -5,6 +5,8 @@ import { unified } from "unified"
 import parser from "remark-parse"
 import remarkGfm from "remark-gfm"
 import remarkHtml from "remark-html"
+import print from "../plugins/transformers/print"
+import details from "../plugins/transformers/zenn-details"
 
 const postsDirectory = path.join(process.cwd(), "contents")
 
@@ -51,6 +53,8 @@ export const getPostData = async (id: string) => {
   const processedContent = await unified()
     .use(parser)
     .use(remarkGfm)
+    .use(details)
+    .use(print)
     .use(remarkHtml, { sanitize: false })
     .process(matterResult.content)
   const contentHtml = processedContent.toString();
