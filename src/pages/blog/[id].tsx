@@ -1,11 +1,11 @@
-import { Header } from "@/components/Header";
-import { getAllPostIds, getPostData } from "@/lib/posts";
-import { Container, Divider, Heading, Stack, Text } from "@chakra-ui/react";
-import { GetStaticPaths, GetStaticProps } from "next";
-import type { Post } from "../../modules"
-import { MarkdownPemplate } from "@/components/MarkdownTemplate";
-import Head from "next/head";
-import { Datetime } from "@/components/Datetime";
+import { Container, Divider, Heading, Stack, Text } from '@chakra-ui/react'
+import { GetStaticPaths, GetStaticProps } from 'next'
+import Head from 'next/head'
+import type { Post } from '../../modules'
+import { Datetime } from '@/components/Datetime'
+import { Header } from '@/components/Header'
+import { MarkdownPemplate } from '@/components/MarkdownTemplate'
+import { getAllPostIds, getPostData } from '@/lib/posts'
 
 type Props = {
   postData: {
@@ -22,14 +22,12 @@ const Post = ({ postData }: Props) => {
         <title>{postData.title}</title>
       </Head>
       <Header />
-      <Container as="main" maxW="container.lg" pt="12" >
+      <Container as="main" maxW="container.lg" pt="12">
         <Stack>
           <Heading as="h1" fontSize="3xl">
             {postData.title}
           </Heading>
-          <Datetime>
-            {postData.date}
-          </Datetime>
+          <Datetime>{postData.date}</Datetime>
         </Stack>
         <MarkdownPemplate source={postData.contentHtml} />
       </Container>
@@ -51,7 +49,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   const postData = await getPostData(params?.id as string)
   return {
     props: {
-      postData
-    }
+      postData,
+    },
   }
 }

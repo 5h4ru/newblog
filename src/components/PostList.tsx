@@ -1,7 +1,7 @@
-import { Box, Flex, Heading, Link, Spacer, Stack, Text } from "@chakra-ui/react"
-import type { Post } from "../modules"
-import NextLink from "next/link"
-import { Datetime } from "./Datetime"
+import { Box, Flex, Heading, Link, Spacer, Stack, Text } from '@chakra-ui/react'
+import NextLink from 'next/link'
+import type { Post } from '../modules'
+import { Datetime } from './Datetime'
 
 type Props = {
   posts: Post[]
@@ -17,9 +17,7 @@ export const PostList = ({ posts }: Props) => {
               {title}
             </Heading>
           </Link>
-          <Datetime>
-            {date}
-          </Datetime>
+          <Datetime>{date}</Datetime>
           <Stack mt="4" mb="4" />
         </Box>
       ))}

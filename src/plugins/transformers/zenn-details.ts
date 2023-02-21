@@ -34,7 +34,9 @@ const margeNodes = (
   (siblingNodes[startIndex] as Details).children = innerNodes
 
   // 後で消すためのフラグ
-  for (let i = startIndex + 1; i <= endIndex; i++) {    siblingNodes[i].type = dummyNodeType  }
+  for (let i = startIndex + 1; i <= endIndex; i++) {
+    siblingNodes[i].type = dummyNodeType
+  }
 }
 
 const getTitle = (text: string) => {
@@ -45,28 +47,36 @@ const visitor = (node: Text, parents: Array<Node>) => {
   const nodeText: string = node.value
   const parent = parents[parents.length - 1] as Paragraph
   const parentIndex = (parents[parents.length - 2] as Root).children.indexOf(
-    parent
+    parent,
   )
 
   if (nodeText && PREFIX.test(nodeText) && SUFFIX_SINGLE.test(nodeText)) {
     const title = getTitle(nodeText)
     node.value = nodeText.slice(nodeText.indexOf('\n') + 1, -4)
 
-    const newNode = {type: detailsType, title: title, children : parent.children}
+    const newNode = {
+      type: detailsType,
+      title: title,
+      children: parent.children,
+    }
     parents[parents.length - 1] = newNode
 
     return CONTINUE
-  } 
+  }
 
   if (nodeText && PREFIX.test(nodeText)) {
     const title = getTitle(nodeText)
     node.value = nodeText.slice(':::details'.length + 1)
-    const newNode = {type: detailsType, title: title, children : parent.children}
+    const newNode = {
+      type: detailsType,
+      title: title,
+      children: parent.children,
+    }
     parents[parents.length - 1] = newNode
     stack.push(parentIndex)
     return CONTINUE
   }
-  
+
   if (nodeText && SUFFIX_MULTIPLE.test(nodeText)) {
     const startIndex = stack.pop()
     if (startIndex) margeNodes(startIndex, parentIndex, parents)

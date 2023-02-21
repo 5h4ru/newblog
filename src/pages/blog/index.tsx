@@ -1,11 +1,11 @@
-import { NextPage } from "next"
-import { GetStaticProps } from "next"
-import { getSortedPostsData } from "@/lib/posts"
-import type { Post } from "../../modules"
-import { PostList } from "../../components/PostList"
-import { Container, Heading } from "@chakra-ui/react"
-import { Header } from "@/components/Header"
-import Head from "next/head"
+import { Container, Heading } from '@chakra-ui/react'
+import { NextPage } from 'next'
+import { GetStaticProps } from 'next'
+import Head from 'next/head'
+import { PostList } from '../../components/PostList'
+import type { Post } from '../../modules'
+import { Header } from '@/components/Header'
+import { getSortedPostsData } from '@/lib/posts'
 
 type Props = {
   allPostsData: Post[]
@@ -31,10 +31,10 @@ const PostPage: NextPage<Props> = ({ allPostsData }) => {
 export default PostPage
 
 export const getStaticProps: GetStaticProps = async () => {
-  const allPostsData = getSortedPostsData();
+  const allPostsData = getSortedPostsData()
   return {
     props: {
       allPostsData,
-    }
+    },
   }
 }
