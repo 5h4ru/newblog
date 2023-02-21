@@ -6,7 +6,11 @@ import remarkHtml from 'remark-html'
 import parser from 'remark-parse'
 import { unified } from 'unified'
 import print from '../plugins/transformers/print'
-import details from '../plugins/transformers/zenn-details'
+import {
+  details,
+  detailsHandler,
+  summaryHandler,
+} from '../plugins/transformers/zenn-details'
 
 const postsDirectory = path.join(process.cwd(), 'contents')
 
@@ -55,7 +59,10 @@ export const getPostData = async (id: string) => {
     .use(remarkGfm)
     .use(details)
     // .use(print)
-    .use(remarkHtml, { sanitize: false })
+    .use(remarkHtml, {
+      sanitize: false,
+      handlers: { details: detailsHandler, summary: summaryHandler },
+    })
     .process(matterResult.content)
   const contentHtml = processedContent.toString()
 

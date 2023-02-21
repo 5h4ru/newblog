@@ -1,4 +1,5 @@
 import { Root, Paragraph, Text } from 'mdast'
+import { State } from 'mdast-util-to-hast'
 import unified from 'unified'
 import { Node } from 'unist'
 import { remove } from 'unist-util-remove'
@@ -55,6 +56,7 @@ const visitor = (node: Text, parents: Array<Node>) => {
     node.value = nodeText.slice(nodeText.indexOf('\n') + 1, -4)
     parent.type = 'details'
     parent.title = title
+    // parent.children.push(createSummaryNode(title))
 
     return CONTINUE
   }
@@ -64,6 +66,7 @@ const visitor = (node: Text, parents: Array<Node>) => {
     node.value = nodeText.slice(':::details'.length + 1)
     parent.type = 'details'
     parent.title = title
+    // parent.children.push(createSummaryNode(title))
     stack.push(parentIndex)
 
     return CONTINUE
@@ -75,11 +78,32 @@ const visitor = (node: Text, parents: Array<Node>) => {
   }
 }
 
-const details: unified.Plugin = () => {
+export const details: unified.Plugin = () => {
   return (tree: Node, file: VFileCompatible) => {
     visitParents(tree, 'text', visitor)
     remove(tree, dummyNodeType)
   }
 }
 
-export default details
+export const detailsHandler = (state: State, node: Node) => {
+  const summaryMDAst = {
+    type: 'summary',
+    children: [{ type: 'text', value: node.title }],
+  }
+  node.children.unshift(summaryMDAst)
+  return {
+    type: 'element',
+    tagName: 'details',
+    properties: {},
+    children: state.all(node),
+  }
+}
+
+export const summaryHandler = (state: State, node: Node) => {
+  return {
+    type: 'element',
+    tagName: 'summary',
+    properties: {},
+    children: state.all(node),
+  }
+}
