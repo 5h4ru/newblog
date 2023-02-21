@@ -31,7 +31,8 @@ const margeNodes = (
     innerNodes.push(Object.assign({}, siblingNodes[i]))
   }
 
-  (siblingNodes[startIndex] as Details).children = innerNodes
+  const detailRoot = siblingNodes[startIndex] as Details
+  detailRoot.children = innerNodes
 
   // 後で消すためのフラグ
   for (let i = startIndex + 1; i <= endIndex; i++) {
