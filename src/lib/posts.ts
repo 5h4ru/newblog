@@ -54,7 +54,7 @@ export const getPostData = async (id: string) => {
     .use(parser)
     .use(remarkGfm)
     .use(details)
-    .use(print)
+    // .use(print)
     .use(remarkHtml, { sanitize: false })
     .process(matterResult.content)
   const contentHtml = processedContent.toString()

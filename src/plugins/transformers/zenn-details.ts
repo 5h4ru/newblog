@@ -15,7 +15,7 @@ const stack: Array<number> = []
 
 type Details = {
   type: 'details'
-  title: string
+  title?: string
   children: Array<Node>
 }
 
@@ -54,7 +54,7 @@ const visitor = (node: Text, parents: Array<Node>) => {
     const title = getTitle(nodeText)
     node.value = nodeText.slice(nodeText.indexOf('\n') + 1, -4)
 
-    const newNode = {
+    const newNode: Details = {
       type: detailsType,
       title: title,
       children: parent.children,
@@ -67,7 +67,7 @@ const visitor = (node: Text, parents: Array<Node>) => {
   if (nodeText && PREFIX.test(nodeText)) {
     const title = getTitle(nodeText)
     node.value = nodeText.slice(':::details'.length + 1)
-    const newNode = {
+    const newNode: Details = {
       type: detailsType,
       title: title,
       children: parent.children,
