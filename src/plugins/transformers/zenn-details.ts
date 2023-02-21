@@ -24,15 +24,14 @@ const margeNodes = (
   endIndex: number,
   parents: Array<Node>,
 ) => {
-  const siblingNodes: Array<Node> = (parents[0] as Root).children
+  const siblingNodes: Array<any> = (parents[0] as Root).children
   const innerNodes: Array<Node> = []
 
   for (let i = startIndex + 1; i < endIndex; i++) {
     innerNodes.push(Object.assign({}, siblingNodes[i]))
   }
 
-  const detailRoot = siblingNodes[startIndex] as Details
-  detailRoot.children = innerNodes
+  siblingNodes[startIndex].children = innerNodes
 
   // 後で消すためのフラグ
   for (let i = startIndex + 1; i <= endIndex; i++) {
@@ -54,13 +53,8 @@ const visitor = (node: Text, parents: Array<Node>) => {
   if (nodeText && PREFIX.test(nodeText) && SUFFIX_SINGLE.test(nodeText)) {
     const title = getTitle(nodeText)
     node.value = nodeText.slice(nodeText.indexOf('\n') + 1, -4)
-
-    const newNode: Details = {
-      type: detailsType,
-      title: title,
-      children: parent.children,
-    }
-    parents[parents.length - 1] = newNode
+    parent.type = 'details'
+    parent.title = title
 
     return CONTINUE
   }
@@ -68,13 +62,10 @@ const visitor = (node: Text, parents: Array<Node>) => {
   if (nodeText && PREFIX.test(nodeText)) {
     const title = getTitle(nodeText)
     node.value = nodeText.slice(':::details'.length + 1)
-    const newNode: Details = {
-      type: detailsType,
-      title: title,
-      children: parent.children,
-    }
-    parents[parents.length - 1] = newNode
+    parent.type = 'details'
+    parent.title = title
     stack.push(parentIndex)
+
     return CONTINUE
   }
 
