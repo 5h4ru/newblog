@@ -47,9 +47,7 @@ const getTitle = (text: string) => {
 const visitor = (node: Text, parents: Array<Node>) => {
   const nodeText: string = node.value
   const parent = parents[1] as Paragraph
-  const parentIndex = (parents[0] as Root).children.indexOf(
-    parent
-  )
+  const parentIndex = (parents[0] as Root).children.indexOf(parent)
 
   if (nodeText && PREFIX.test(nodeText) && SUFFIX_SINGLE.test(nodeText)) {
     const title = getTitle(nodeText)
