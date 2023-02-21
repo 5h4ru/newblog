@@ -46,17 +46,16 @@ const getTitle = (text: string) => {
 
 const visitor = (node: Text, parents: Array<Node>) => {
   const nodeText: string = node.value
-  const parent = parents[parents.length - 1] as Paragraph
-  const parentIndex = (parents[parents.length - 2] as Root).children.indexOf(
-    parent,
+  const parent = parents[1] as Paragraph
+  const parentIndex = (parents[0] as Root).children.indexOf(
+    parent
   )
 
   if (nodeText && PREFIX.test(nodeText) && SUFFIX_SINGLE.test(nodeText)) {
     const title = getTitle(nodeText)
     node.value = nodeText.slice(nodeText.indexOf('\n') + 1, -4)
-    parent.type = 'details'
+    parent.type = detailsType
     parent.title = title
-    // parent.children.push(createSummaryNode(title))
 
     return CONTINUE
   }
@@ -64,9 +63,8 @@ const visitor = (node: Text, parents: Array<Node>) => {
   if (nodeText && PREFIX.test(nodeText)) {
     const title = getTitle(nodeText)
     node.value = nodeText.slice(':::details'.length + 1)
-    parent.type = 'details'
+    parent.type = detailsType
     parent.title = title
-    // parent.children.push(createSummaryNode(title))
     stack.push(parentIndex)
 
     return CONTINUE
