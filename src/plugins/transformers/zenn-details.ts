@@ -14,6 +14,12 @@ const detailsType = 'details'
 const dummyNodeType = 'dummy'
 const stack: Array<number> = []
 
+type Details = {
+  type: 'paragraph' | 'details'
+  title?: string
+  children: Array<Node>
+}
+
 const margeNodes = (
   startIndex: number,
   endIndex: number,
@@ -46,8 +52,10 @@ const visitor = (node: Text, parents: Array<Node>) => {
   if (nodeText && PREFIX.test(nodeText) && SUFFIX_SINGLE.test(nodeText)) {
     const title = getTitle(nodeText)
     node.value = nodeText.slice(nodeText.indexOf('\n') + 1, -4)
-    parent.type = 'details'
-    parent.title = title
+    const newNode: Details = { ...parent }
+    newNode.type = 'details'
+    newNode.title = title
+    Object.assign(parent, newNode)
 
     return CONTINUE
   }
@@ -55,8 +63,11 @@ const visitor = (node: Text, parents: Array<Node>) => {
   if (nodeText && PREFIX.test(nodeText)) {
     const title = getTitle(nodeText)
     node.value = nodeText.slice(':::details'.length + 1)
-    parent.type = 'details'
-    parent.title = title
+    const newNode: Details = { ...parent }
+    newNode.type = 'details'
+    newNode.title = title
+    Object.assign(parent, newNode)
+
     stack.push(parentIndex)
 
     return CONTINUE
@@ -75,7 +86,7 @@ export const details: unified.Plugin = () => {
   }
 }
 
-export const detailsHandler = (state: State, node: Node) => {
+export const detailsHandler = (state: State, node: any) => {
   const summaryMDAst = {
     type: 'summary',
     children: [{ type: 'text', value: node.title }],
@@ -89,7 +100,7 @@ export const detailsHandler = (state: State, node: Node) => {
   }
 }
 
-export const summaryHandler = (state: State, node: Node) => {
+export const summaryHandler = (state: State, node: any) => {
   return {
     type: 'element',
     tagName: 'summary',
