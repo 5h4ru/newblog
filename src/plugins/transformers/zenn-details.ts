@@ -14,12 +14,6 @@ const detailsType = 'details'
 const dummyNodeType = 'dummy'
 const stack: Array<number> = []
 
-type Details = {
-  type: 'details'
-  title?: string
-  children: Array<Node>
-}
-
 const margeNodes = (
   startIndex: number,
   endIndex: number,
@@ -52,7 +46,7 @@ const visitor = (node: Text, parents: Array<Node>) => {
   if (nodeText && PREFIX.test(nodeText) && SUFFIX_SINGLE.test(nodeText)) {
     const title = getTitle(nodeText)
     node.value = nodeText.slice(nodeText.indexOf('\n') + 1, -4)
-    parent.type = detailsType
+    parent.type = 'details'
     parent.title = title
 
     return CONTINUE
@@ -61,7 +55,7 @@ const visitor = (node: Text, parents: Array<Node>) => {
   if (nodeText && PREFIX.test(nodeText)) {
     const title = getTitle(nodeText)
     node.value = nodeText.slice(':::details'.length + 1)
-    parent.type = detailsType
+    parent.type = 'details'
     parent.title = title
     stack.push(parentIndex)
 
