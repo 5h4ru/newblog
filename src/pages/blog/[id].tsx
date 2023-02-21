@@ -1,11 +1,11 @@
-import { Header } from "@/src/components/Header";
-import { getAllPostIds, getPostData } from "@/src/lib/posts";
+import { Header } from "@/components/Header";
+import { getAllPostIds, getPostData } from "@/lib/posts";
 import { Container, Divider, Heading, Stack, Text } from "@chakra-ui/react";
 import { GetStaticPaths, GetStaticProps } from "next";
 import type { Post } from "../../modules"
-import { MarkdownPemplate } from "@/src/components/MarkdownTemplate";
+import { MarkdownPemplate } from "@/components/MarkdownTemplate";
 import Head from "next/head";
-import { Datetime } from "@/src/components/Datetime";
+import { Datetime } from "@/components/Datetime";
 
 type Props = {
   postData: {

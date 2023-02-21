@@ -1,10 +1,10 @@
 import { NextPage } from "next"
 import { GetStaticProps } from "next"
-import { getSortedPostsData } from "@/src/lib/posts"
+import { getSortedPostsData } from "@/lib/posts"
 import type { Post } from "../../modules"
 import { PostList } from "../../components/PostList"
 import { Container, Heading } from "@chakra-ui/react"
-import { Header } from "@/src/components/Header"
+import { Header } from "@/components/Header"
 import Head from "next/head"
 
 type Props = {
