@@ -6,17 +6,18 @@ import { remove } from 'unist-util-remove'
 import { CONTINUE, visitParents } from 'unist-util-visit-parents'
 import { VFileCompatible } from 'vfile'
 
-const PREFIX = /^:::details\s*(.*)$/m
+const PREFIX = /^:::message\s*(.*)\n/
+const PREFIX_ALERT = /^:::message alert\n/
 const SUFFIX_SINGLE = /\n:::$/
 const SUFFIX_MULTIPLE = /^:::$/
 
-const detailsType = 'details'
+const messageType = 'message'
 const dummyNodeType = 'dummy'
 const stack: Array<number> = []
 
-type Details = {
-  type: 'paragraph' | 'details'
-  title?: string
+type Message = {
+  type: 'paragraph' | 'message'
+  isAlert: boolean
   children: Array<Node>
 }
 
@@ -52,20 +53,19 @@ const visitor = (node: Text, parents: Array<Node>) => {
   if (nodeText && PREFIX.test(nodeText) && SUFFIX_SINGLE.test(nodeText)) {
     const title = getTitle(nodeText)
     node.value = nodeText.slice(nodeText.indexOf('\n') + 1, -4)
-    const newNode: Details = { ...parent }
-    newNode.type = detailsType
-    newNode.title = title
+    const newNode: Message = { ...parent, isAlert: false }
+    newNode.type = messageType
+    newNode.isAlert = PREFIX_ALERT.test(nodeText) ? true : false
     Object.assign(parent, newNode)
-
     return CONTINUE
   }
 
   if (nodeText && PREFIX.test(nodeText)) {
     const title = getTitle(nodeText)
-    node.value = nodeText.slice(':::details'.length + 1)
-    const newNode: Details = { ...parent }
-    newNode.type = detailsType
-    newNode.title = title
+    node.value = nodeText.slice(':::message'.length + 1)
+    const newNode: Message = { ...parent, isAlert: false }
+    newNode.type = messageType
+    newNode.isAlert = PREFIX_ALERT.test(nodeText) ? true : false
     Object.assign(parent, newNode)
 
     stack.push(parentIndex)
@@ -79,32 +79,29 @@ const visitor = (node: Text, parents: Array<Node>) => {
   }
 }
 
-export const details: unified.Plugin = () => {
+export const message: unified.Plugin = () => {
   return (tree: Node, file: VFileCompatible) => {
     visitParents(tree, 'text', visitor)
     remove(tree, dummyNodeType)
   }
 }
 
-export const detailsHandler = (state: State, node: any) => {
-  const summaryMDAst = {
-    type: 'summary',
-    children: [{ type: 'text', value: node.title }],
+export const messageHandler = (state: State, node: any) => {
+  let classProps = `msg message`
+  if (node.isAlert) {
+    classProps = `msg alert`
   }
-  node.children.unshift(summaryMDAst)
+  // const summaryMDAst = {
+  //   type: 'summary',
+  //   children: [{ type: 'text', value: node.title }],
+  // }
+  // node.children.unshift(summaryMDAst)
   return {
     type: 'element',
-    tagName: 'details',
-    properties: {},
-    children: state.all(node),
-  }
-}
-
-export const summaryHandler = (state: State, node: any) => {
-  return {
-    type: 'element',
-    tagName: 'summary',
-    properties: {},
+    tagName: 'aside',
+    properties: {
+      className: [classProps],
+    },
     children: state.all(node),
   }
 }

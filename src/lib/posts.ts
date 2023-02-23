@@ -11,6 +11,7 @@ import {
   detailsHandler,
   summaryHandler,
 } from '../plugins/transformers/zenn-details'
+import { message, messageHandler } from '@/plugins/transformers/zenn-message'
 
 const postsDirectory = path.join(process.cwd(), 'contents')
 
@@ -58,10 +59,15 @@ export const getPostData = async (id: string) => {
     .use(parser)
     .use(remarkGfm)
     .use(details)
+    .use(message)
     // .use(print)
     .use(remarkHtml, {
       sanitize: false,
-      handlers: { details: detailsHandler, summary: summaryHandler },
+      handlers: {
+        details: detailsHandler,
+        summary: summaryHandler,
+        message: messageHandler,
+      },
     })
     .process(matterResult.content)
   const contentHtml = processedContent.toString()

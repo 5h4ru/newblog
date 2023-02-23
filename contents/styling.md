@@ -39,6 +39,13 @@ date: "2023-01-25"
         - Nest 4
           - Nest 5
             - Nest 6
+- UnorderdList
+  - Nest
+    - Nest 2
+      - Next 3
+        - Nest 4
+          - Nest 5
+            - Nest 6
 - 箇条書き
   - 入れ子
 
@@ -84,3 +91,19 @@ int main() {
 |a|b|c|
 
 アラインメントがうまく行ってない……
+
+## `details` 記法
+
+:::details タイトル
+表示したい内容
+:::
+
+## `message` 記法
+
+:::message
+メッセージをここに
+:::
+
+:::message alert
+警告メッセージをここに
+:::
