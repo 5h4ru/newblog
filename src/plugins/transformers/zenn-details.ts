@@ -53,7 +53,7 @@ const visitor = (node: Text, parents: Array<Node>) => {
     const title = getTitle(nodeText)
     node.value = nodeText.slice(nodeText.indexOf('\n') + 1, -4)
     const newNode: Details = { ...parent }
-    newNode.type = 'details'
+    newNode.type = detailsType
     newNode.title = title
     Object.assign(parent, newNode)
 
@@ -64,7 +64,7 @@ const visitor = (node: Text, parents: Array<Node>) => {
     const title = getTitle(nodeText)
     node.value = nodeText.slice(':::details'.length + 1)
     const newNode: Details = { ...parent }
-    newNode.type = 'details'
+    newNode.type = detailsType
     newNode.title = title
     Object.assign(parent, newNode)
 
