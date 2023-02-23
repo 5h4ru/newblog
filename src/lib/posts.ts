@@ -1,9 +1,12 @@
 import fs from 'fs'
 import path from 'path'
 import matter from 'gray-matter'
+import rehypeKatex from 'rehype-katex'
+import rehypeStringify from 'rehype-stringify'
 import remarkGfm from 'remark-gfm'
-import remarkHtml from 'remark-html'
+import remarkMath from 'remark-math'
 import parser from 'remark-parse'
+import remarkRehype from 'remark-rehype'
 import { unified } from 'unified'
 import print from '../plugins/transformers/print'
 import {
@@ -58,17 +61,18 @@ export const getPostData = async (id: string) => {
   const processedContent = await unified()
     .use(parser)
     .use(remarkGfm)
+    .use(remarkMath)
     .use(details)
     .use(message)
-    // .use(print)
-    .use(remarkHtml, {
-      sanitize: false,
+    .use(remarkRehype, <any>{
       handlers: {
         details: detailsHandler,
         summary: summaryHandler,
         message: messageHandler,
       },
     })
+    .use(rehypeKatex)
+    .use(rehypeStringify)
     .process(matterResult.content)
   const contentHtml = processedContent.toString()
 
