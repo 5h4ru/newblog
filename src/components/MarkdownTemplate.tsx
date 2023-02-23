@@ -20,6 +20,11 @@ import {
   Td,
   TableCaption,
   TableContainer,
+  Accordion,
+  AccordionItem,
+  AccordionButton,
+  AccordionPanel,
+  AccordionIcon,
 } from '@chakra-ui/react'
 import hljs from 'highlight.js'
 import parse from 'html-react-parser'
@@ -209,6 +214,14 @@ const options: HTMLReactParserOptions = {
         )
       }
       if (domNode.name === 'p') {
+        // if (domNode.parent?.name === 'details') {
+        //   console.log('aaaあああああああああああああ')
+        //   return (
+        //     <AccordionPanel pb={4}>
+        //       {domToReact(domNode.children, options)}
+        //     </AccordionPanel>
+        //   )
+        // }
         return <Text {...p.props}>{domToReact(domNode.children, options)}</Text>
       }
       if (domNode.name === 'blockquote') {
@@ -283,6 +296,33 @@ const options: HTMLReactParserOptions = {
       }
       if (domNode.name === 'td') {
         return <Td>{domToReact(domNode.children, options)}</Td>
+      }
+      if (domNode.name === 'details') {
+        const summaryIndex = domNode.children.findIndex(
+          (e: any) => e.name === 'summary',
+        )
+
+        return (
+          <Accordion allowMultiple>
+            <AccordionItem>
+              <AccordionButton>
+                <Box as="span" flex="1" textAlign="left">
+                  {summaryIndex != -1
+                    ? domToReact(
+                        domNode.children[summaryIndex].children,
+                        options,
+                      )
+                    : 'Details'}
+                </Box>
+                <AccordionIcon />
+              </AccordionButton>
+
+              <AccordionPanel>
+                {domToReact(domNode.children.slice(1), options)}
+              </AccordionPanel>
+            </AccordionItem>
+          </Accordion>
+        )
       }
     }
   },
