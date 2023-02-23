@@ -1,18 +1,23 @@
 {
-    "markdownlint.config": {
-        "MD033": false,
-        "MD034": false,
-        "MD040": false,
-    },
-    "[markdown]": {
-        "editor.formatOnSave": false,
-        "editor.unicodeHighlight.ambiguousCharacters": true,
-        "editor.unicodeHighlight.invisibleCharacters": true,
-        "editor.wordWrap": "on",
-        "editor.quickSuggestions": {
-            "comments": "off",
-            "strings": "off",
-            "other": "off"
-        }
-    },
+  "editor.defaultFormatter": "dbaeumer.vscode-eslint",
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  },
+  "markdownlint.config": {
+    "MD033": false,
+    "MD034": false,
+    "MD040": false
+  },
+  "[markdown]": {
+    "editor.formatOnSave": false,
+    "editor.unicodeHighlight.ambiguousCharacters": true,
+    "editor.unicodeHighlight.invisibleCharacters": true,
+    "editor.wordWrap": "on",
+    "editor.quickSuggestions": {
+      "comments": "off",
+      "strings": "off",
+      "other": "off"
+    }
+  }
 }
