@@ -25,6 +25,8 @@ import {
   AccordionButton,
   AccordionPanel,
   AccordionIcon,
+  Alert,
+  AlertIcon,
 } from '@chakra-ui/react'
 import hljs from 'highlight.js'
 import parse from 'html-react-parser'
@@ -322,6 +324,17 @@ const options: HTMLReactParserOptions = {
               </AccordionPanel>
             </AccordionItem>
           </Accordion>
+        )
+      }
+      if (domNode.name === 'aside') {
+        const classStr = domNode.attribs.class
+        return (
+          <Box my="1.5rem">
+            <Alert status={classStr.includes('alert') ? 'error' : 'warning'}>
+              <AlertIcon />
+              {domToReact(domNode.children, options)}
+            </Alert>
+          </Box>
         )
       }
     }
