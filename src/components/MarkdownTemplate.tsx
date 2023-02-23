@@ -308,7 +308,10 @@ const options: HTMLReactParserOptions = {
               </AccordionButton>
 
               <AccordionPanel>
-                {domToReact(domNode.children.slice(1), options)}
+                {domToReact(
+                  domNode.children.filter((e, i) => i !== summaryIndex),
+                  options,
+                )}
               </AccordionPanel>
             </AccordionItem>
           </Accordion>
