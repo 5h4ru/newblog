@@ -87,15 +87,11 @@ const p = {
 }
 
 const ul = {
-  props: {
-    mb: '1rem',
-  },
+  props: {},
 }
 
 const ol = {
-  props: {
-    mb: '1rem',
-  },
+  props: {},
 }
 
 const li = {
@@ -134,7 +130,7 @@ const img = {
 
 const code = {
   props: {
-    fontSize: '.8rem',
+    fontSize: '.8em',
     borderRadius: '6px',
     px: '0.4rem',
   },
