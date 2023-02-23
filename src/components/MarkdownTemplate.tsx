@@ -212,14 +212,6 @@ const options: HTMLReactParserOptions = {
         )
       }
       if (domNode.name === 'p') {
-        // if (domNode.parent?.name === 'details') {
-        //   console.log('aaaあああああああああああああ')
-        //   return (
-        //     <AccordionPanel pb={4}>
-        //       {domToReact(domNode.children, options)}
-        //     </AccordionPanel>
-        //   )
-        // }
         return <Text {...p.props}>{domToReact(domNode.children, options)}</Text>
       }
       if (domNode.name === 'blockquote') {
