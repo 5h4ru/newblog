@@ -87,15 +87,11 @@ const p = {
 }
 
 const ul = {
-  props: {
-    mb: '1rem',
-  },
+  props: {},
 }
 
 const ol = {
-  props: {
-    mb: '1rem',
-  },
+  props: {},
 }
 
 const li = {
@@ -134,7 +130,7 @@ const img = {
 
 const code = {
   props: {
-    fontSize: '.8rem',
+    fontSize: '.8em',
     borderRadius: '6px',
     px: '0.4rem',
   },
@@ -216,14 +212,6 @@ const options: HTMLReactParserOptions = {
         )
       }
       if (domNode.name === 'p') {
-        // if (domNode.parent?.name === 'details') {
-        //   console.log('aaaあああああああああああああ')
-        //   return (
-        //     <AccordionPanel pb={4}>
-        //       {domToReact(domNode.children, options)}
-        //     </AccordionPanel>
-        //   )
-        // }
         return <Text {...p.props}>{domToReact(domNode.children, options)}</Text>
       }
       if (domNode.name === 'blockquote') {
@@ -320,7 +308,12 @@ const options: HTMLReactParserOptions = {
               </AccordionButton>
 
               <AccordionPanel>
-                {domToReact(domNode.children.slice(1), options)}
+                {domToReact(
+                  domNode.children.filter(
+                    (e: any, i: number) => i !== summaryIndex,
+                  ),
+                  options,
+                )}
               </AccordionPanel>
             </AccordionItem>
           </Accordion>
