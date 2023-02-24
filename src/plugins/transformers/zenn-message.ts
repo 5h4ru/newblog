@@ -1,10 +1,10 @@
-import { Root, Paragraph, Text } from 'mdast'
-import { State } from 'mdast-util-to-hast'
-import unified from 'unified'
-import { Node } from 'unist'
+import type { Paragraph, Root, Text } from 'mdast'
+import type { State } from 'mdast-util-to-hast'
+import type unified from 'unified'
+import type { Node, Parent } from 'unist'
 import { remove } from 'unist-util-remove'
 import { CONTINUE, visitParents } from 'unist-util-visit-parents'
-import { VFileCompatible } from 'vfile'
+import type { VFileCompatible } from 'vfile'
 
 const PREFIX = /^:::message\s*(.*)\n/
 const PREFIX_ALERT = /^:::message alert\n/
@@ -15,18 +15,17 @@ const messageType = 'message'
 const dummyNodeType = 'dummy'
 const stack: Array<number> = []
 
-type Message = {
-  type: 'paragraph' | 'message'
+type Message = Parent & {
+  type: 'message'
   isAlert: boolean
-  children: Array<Node>
 }
 
 const margeNodes = (
   startIndex: number,
   endIndex: number,
-  parents: Array<Node>,
+  parents: Array<Parent>,
 ) => {
-  const siblingNodes: Array<any> = (parents[0] as Root).children
+  const siblingNodes = parents[0].children as Array<Parent>
   const innerNodes: Array<Node> = []
 
   for (let i = startIndex + 1; i < endIndex; i++) {
@@ -41,19 +40,14 @@ const margeNodes = (
   }
 }
 
-const getTitle = (text: string) => {
-  return text.match(PREFIX)?.[1]
-}
-
-const visitor = (node: Text, parents: Array<Node>) => {
+const visitor = (node: Text, parents: Array<Parent>) => {
   const nodeText: string = node.value
   const parent = parents[1] as Paragraph
   const parentIndex = (parents[0] as Root).children.indexOf(parent)
 
   if (nodeText && PREFIX.test(nodeText) && SUFFIX_SINGLE.test(nodeText)) {
-    const title = getTitle(nodeText)
     node.value = nodeText.slice(nodeText.indexOf('\n') + 1, -4)
-    const newNode: Message = { ...parent, isAlert: false }
+    const newNode: Message = { ...parent, type: messageType, isAlert: false }
     newNode.type = messageType
     newNode.isAlert = PREFIX_ALERT.test(nodeText) ? true : false
     Object.assign(parent, newNode)
@@ -61,9 +55,8 @@ const visitor = (node: Text, parents: Array<Node>) => {
   }
 
   if (nodeText && PREFIX.test(nodeText)) {
-    const title = getTitle(nodeText)
     node.value = nodeText.slice(':::message'.length + 1)
-    const newNode: Message = { ...parent, isAlert: false }
+    const newNode: Message = { ...parent, type: messageType, isAlert: false }
     newNode.type = messageType
     newNode.isAlert = PREFIX_ALERT.test(nodeText) ? true : false
     Object.assign(parent, newNode)
@@ -86,22 +79,17 @@ export const message: unified.Plugin = () => {
   }
 }
 
-export const messageHandler = (state: State, node: any) => {
+export const messageHandler = (state: State, node: Message) => {
   let classProps = `msg message`
   if (node.isAlert) {
     classProps = `msg alert`
   }
-  // const summaryMDAst = {
-  //   type: 'summary',
-  //   children: [{ type: 'text', value: node.title }],
-  // }
-  // node.children.unshift(summaryMDAst)
   return {
     type: 'element',
     tagName: 'aside',
     properties: {
       className: [classProps],
     },
-    children: state.all(node),
+    children: state.all(node as any),
   }
 }

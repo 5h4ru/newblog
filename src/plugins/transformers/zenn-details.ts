@@ -1,10 +1,10 @@
-import { Root, Paragraph, Text } from 'mdast'
-import { State } from 'mdast-util-to-hast'
-import unified from 'unified'
-import { Node } from 'unist'
+import type { Paragraph, Text } from 'mdast'
+import type { State } from 'mdast-util-to-hast'
+import type unified from 'unified'
+import type { Node, Parent } from 'unist'
 import { remove } from 'unist-util-remove'
 import { CONTINUE, visitParents } from 'unist-util-visit-parents'
-import { VFileCompatible } from 'vfile'
+import type { VFileCompatible } from 'vfile'
 
 const PREFIX = /^:::details\s*(.*)$/m
 const SUFFIX_SINGLE = /\n:::$/
@@ -14,18 +14,17 @@ const detailsType = 'details'
 const dummyNodeType = 'dummy'
 const stack: Array<number> = []
 
-type Details = {
-  type: 'paragraph' | 'details'
+type Details = Parent & {
+  type: 'details'
   title?: string
-  children: Array<Node>
 }
 
 const margeNodes = (
   startIndex: number,
   endIndex: number,
-  parents: Array<Node>,
+  parents: Array<Parent>,
 ) => {
-  const siblingNodes: Array<any> = (parents[0] as Root).children
+  const siblingNodes = parents[0].children as Array<Parent>
   const innerNodes: Array<Node> = []
 
   for (let i = startIndex + 1; i < endIndex; i++) {
@@ -44,15 +43,15 @@ const getTitle = (text: string) => {
   return text.match(PREFIX)?.[1]
 }
 
-const visitor = (node: Text, parents: Array<Node>) => {
+const visitor = (node: Text, parents: Array<Parent>) => {
   const nodeText: string = node.value
   const parent = parents[1] as Paragraph
-  const parentIndex = (parents[0] as Root).children.indexOf(parent)
+  const parentIndex = (parents[0] as Parent).children.indexOf(parent)
 
   if (nodeText && PREFIX.test(nodeText) && SUFFIX_SINGLE.test(nodeText)) {
     const title = getTitle(nodeText)
     node.value = nodeText.slice(nodeText.indexOf('\n') + 1, -4)
-    const newNode: Details = { ...parent }
+    const newNode: Details = { ...parent, type: detailsType }
     newNode.type = detailsType
     newNode.title = title
     Object.assign(parent, newNode)
@@ -63,7 +62,7 @@ const visitor = (node: Text, parents: Array<Node>) => {
   if (nodeText && PREFIX.test(nodeText)) {
     const title = getTitle(nodeText)
     node.value = nodeText.slice(':::details'.length + 1)
-    const newNode: Details = { ...parent }
+    const newNode: Details = { ...parent, type: detailsType }
     newNode.type = detailsType
     newNode.title = title
     Object.assign(parent, newNode)
@@ -86,7 +85,7 @@ export const details: unified.Plugin = () => {
   }
 }
 
-export const detailsHandler = (state: State, node: any) => {
+export const detailsHandler = (state: State, node: Details) => {
   const summaryMDAst = {
     type: 'summary',
     children: [{ type: 'text', value: node.title }],
@@ -96,15 +95,15 @@ export const detailsHandler = (state: State, node: any) => {
     type: 'element',
     tagName: 'details',
     properties: {},
-    children: state.all(node),
+    children: state.all(node as any),
   }
 }
 
-export const summaryHandler = (state: State, node: any) => {
+export const summaryHandler = (state: State, node: Node) => {
   return {
     type: 'element',
     tagName: 'summary',
     properties: {},
-    children: state.all(node),
+    children: state.all(node as any),
   }
 }
