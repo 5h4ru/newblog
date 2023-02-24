@@ -1,3 +1,4 @@
+import { CopyIcon, CheckIcon } from '@chakra-ui/icons'
 import { Button, useClipboard, ButtonProps } from '@chakra-ui/react'
 
 type CopyButtonProps = ButtonProps & {
@@ -19,7 +20,17 @@ const CopyButton = ({ code, ...props }: CopyButtonProps) => {
       {...props}
       onClick={onCopy}
     >
-      {hasCopied ? 'Copied!' : 'Copy'}
+      {hasCopied ? (
+        <>
+          <CheckIcon />
+          Copied!
+        </>
+      ) : (
+        <>
+          <CopyIcon />
+          Copy
+        </>
+      )}
     </Button>
   )
 }
