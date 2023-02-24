@@ -1,7 +1,7 @@
-import unified from 'unified'
-import { Node } from 'unist'
+import type unified from 'unified'
+import type { Node } from 'unist'
 import { inspect } from 'unist-util-inspect'
-import { VFileCompatible } from 'vfile'
+import type { VFileCompatible } from 'vfile'
 
 const print: unified.Plugin = () => {
   return (tree: Node, file: VFileCompatible) => {

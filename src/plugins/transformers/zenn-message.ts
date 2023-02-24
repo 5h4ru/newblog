@@ -1,5 +1,5 @@
 import type { Paragraph, Root, Text } from 'mdast'
-import type { State } from 'mdast-util-to-hast'
+import type { Handler, State } from 'mdast-util-to-hast'
 import type unified from 'unified'
 import type { Node, Parent } from 'unist'
 import { remove } from 'unist-util-remove'
@@ -79,7 +79,7 @@ export const message: unified.Plugin = () => {
   }
 }
 
-export const messageHandler = (state: State, node: Message) => {
+export const messageHandler: Handler = (state: State, node: Message) => {
   let classProps = `msg message`
   if (node.isAlert) {
     classProps = `msg alert`

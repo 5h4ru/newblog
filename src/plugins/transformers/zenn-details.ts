@@ -1,5 +1,5 @@
 import type { Paragraph, Text } from 'mdast'
-import type { State } from 'mdast-util-to-hast'
+import type { Handler, State } from 'mdast-util-to-hast'
 import type unified from 'unified'
 import type { Node, Parent } from 'unist'
 import { remove } from 'unist-util-remove'
@@ -85,7 +85,7 @@ export const details: unified.Plugin = () => {
   }
 }
 
-export const detailsHandler = (state: State, node: Details) => {
+export const detailsHandler: Handler = (state: State, node: Details) => {
   const summaryMDAst = {
     type: 'summary',
     children: [{ type: 'text', value: node.title }],
@@ -99,7 +99,7 @@ export const detailsHandler = (state: State, node: Details) => {
   }
 }
 
-export const summaryHandler = (state: State, node: Node) => {
+export const summaryHandler: Handler = (state: State, node: Node) => {
   return {
     type: 'element',
     tagName: 'summary',
