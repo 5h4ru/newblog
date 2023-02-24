@@ -27,11 +27,14 @@ import {
   AccordionIcon,
   Alert,
   AlertIcon,
+  useClipboard,
+  Button,
 } from '@chakra-ui/react'
 import hljs from 'highlight.js'
 import parse from 'html-react-parser'
 import { domToReact, HTMLReactParserOptions } from 'html-react-parser'
 import 'highlight.js/styles/github-dark-dimmed.css'
+import CopyButton from './copy-button'
 
 const h1 = {
   props: {
@@ -250,9 +253,13 @@ const options: HTMLReactParserOptions = {
             domToReact(domNode.children) as string,
             languageSubset,
           ).value
+          const codeStr = domNode.children[0].data
           return (
-            <Box as="code" className="hljs" {...preCode.props}>
-              {parse(highlightCode)}
+            <Box position="relative" zIndex="0">
+              <Box as="code" className="hljs" {...preCode.props}>
+                {parse(highlightCode)}
+                <CopyButton code={codeStr} />
+              </Box>
             </Box>
           )
         }
