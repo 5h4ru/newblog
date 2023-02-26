@@ -24,29 +24,41 @@ const getTitle = (text: string) => {
   return text.match(PREFIX)?.[1]
 }
 
+const createNewNode = (parent: Paragraph, props = {}) => {
+  const newNode: Details = {
+    ...parent,
+    type: detailsType,
+    title: '',
+    ...props,
+  }
+  return newNode
+}
+
+const replaceNode = <T>(parent: Paragraph, newNode: T) => {
+  Object.assign(parent, newNode)
+}
+
 const visitor = (node: Text, parents: Array<Parent>) => {
   const nodeText: string = node.value
   const parent = parents[1] as Paragraph
   const parentIndex = (parents[0] as Parent).children.indexOf(parent)
 
   if (nodeText && PREFIX.test(nodeText) && SUFFIX_SINGLE.test(nodeText)) {
-    const title = getTitle(nodeText)
     node.value = nodeText.slice(nodeText.indexOf('\n') + 1, -4)
-    const newNode: Details = { ...parent, type: detailsType }
-    newNode.type = detailsType
-    newNode.title = title
-    Object.assign(parent, newNode)
+    const newNode = createNewNode(parent, {
+      title: getTitle(nodeText),
+    })
+    replaceNode(parent, newNode)
 
     return CONTINUE
   }
 
   if (nodeText && PREFIX.test(nodeText)) {
-    const title = getTitle(nodeText)
     node.value = nodeText.slice(':::details'.length + 1)
-    const newNode: Details = { ...parent, type: detailsType }
-    newNode.type = detailsType
-    newNode.title = title
-    Object.assign(parent, newNode)
+    const newNode = createNewNode(parent, {
+      title: getTitle(nodeText),
+    })
+    replaceNode(parent, newNode)
 
     stack.push(parentIndex)
 

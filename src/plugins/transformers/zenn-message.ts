@@ -21,6 +21,16 @@ type Message = Parent & {
   isAlert: boolean
 }
 
+const createNewNode = (parent: Paragraph, props = {}) => {
+  const newNode: Message = {
+    ...parent,
+    type: messageType,
+    isAlert: false,
+    ...props,
+  }
+  return newNode
+}
+
 const visitor = (node: Text, parents: Array<Parent>) => {
   const nodeText: string = node.value
   const parent = parents[1] as Paragraph
@@ -28,18 +38,18 @@ const visitor = (node: Text, parents: Array<Parent>) => {
 
   if (nodeText && PREFIX.test(nodeText) && SUFFIX_SINGLE.test(nodeText)) {
     node.value = nodeText.slice(nodeText.indexOf('\n') + 1, -4)
-    const newNode: Message = { ...parent, type: messageType, isAlert: false }
-    newNode.type = messageType
-    newNode.isAlert = PREFIX_ALERT.test(nodeText) ? true : false
+    const newNode = createNewNode(parent, {
+      isAlert: PREFIX_ALERT.test(nodeText),
+    })
     Object.assign(parent, newNode)
     return CONTINUE
   }
 
   if (nodeText && PREFIX.test(nodeText)) {
     node.value = nodeText.slice(':::message'.length + 1)
-    const newNode: Message = { ...parent, type: messageType, isAlert: false }
-    newNode.type = messageType
-    newNode.isAlert = PREFIX_ALERT.test(nodeText) ? true : false
+    const newNode = createNewNode(parent, {
+      isAlert: PREFIX_ALERT.test(nodeText),
+    })
     Object.assign(parent, newNode)
 
     stack.push(parentIndex)
