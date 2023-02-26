@@ -5,6 +5,7 @@ import type { Node, Parent } from 'unist'
 import { remove } from 'unist-util-remove'
 import { CONTINUE, visitParents } from 'unist-util-visit-parents'
 import type { VFileCompatible } from 'vfile'
+import { mergeNodes } from './node-converter'
 
 const PREFIX = /^:::details\s*(.*)$/m
 const SUFFIX_SINGLE = /\n:::$/
@@ -17,26 +18,6 @@ const stack: Array<number> = []
 type Details = Parent & {
   type: 'details'
   title?: string
-}
-
-const margeNodes = (
-  startIndex: number,
-  endIndex: number,
-  parents: Array<Parent>,
-) => {
-  const siblingNodes = parents[0].children as Array<Parent>
-  const innerNodes: Array<Node> = []
-
-  for (let i = startIndex + 1; i < endIndex; i++) {
-    innerNodes.push(Object.assign({}, siblingNodes[i]))
-  }
-
-  siblingNodes[startIndex].children = innerNodes
-
-  // 後で消すためのフラグ
-  for (let i = startIndex + 1; i <= endIndex; i++) {
-    siblingNodes[i].type = dummyNodeType
-  }
 }
 
 const getTitle = (text: string) => {
@@ -74,7 +55,7 @@ const visitor = (node: Text, parents: Array<Parent>) => {
 
   if (nodeText && SUFFIX_MULTIPLE.test(nodeText)) {
     const startIndex = stack.pop()
-    if (startIndex) margeNodes(startIndex, parentIndex, parents)
+    if (startIndex) mergeNodes(startIndex, parentIndex, parents)
   }
 }
 
