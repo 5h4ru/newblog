@@ -64,7 +64,7 @@ export const getPostData = async (id: string) => {
     .use(remarkMath)
     .use(details)
     .use(message)
-    .use(remarkRehype, <any>{
+    .use(remarkRehype, {
       handlers: {
         details: detailsHandler,
         summary: summaryHandler,
