@@ -6,8 +6,6 @@ import type { VFileCompatible } from 'vfile'
 import conveter from './node-converter'
 import type { createNewNodeType } from './node-converter'
 
-const PREFIX_ALERT = /^:::message alert\n/
-
 const messageType = 'message'
 
 type Message = Parent & {
@@ -20,7 +18,7 @@ const createNewNode: createNewNodeType = (node: Text, parent: Paragraph) => {
   const newNode: Message = {
     ...parent,
     type: messageType,
-    isAlert: PREFIX_ALERT.test(nodeText),
+    isAlert: nodeText.startsWith(':::message alert'),
   }
   return newNode
 }

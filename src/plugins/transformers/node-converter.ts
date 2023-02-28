@@ -4,7 +4,7 @@ import { remove } from 'unist-util-remove'
 import { CONTINUE } from 'unist-util-visit-parents'
 import { visitParents } from 'unist-util-visit-parents'
 
-export type createNewNodeType = (node: Text, parent: Paragraph) => Node
+export type createNewNodeType = (node: Text, parent: Paragraph) => Node & Parent
 
 const stack: Array<number> = []
 const dummyNodeType = 'dummy'
@@ -47,8 +47,13 @@ export const visitor =
 
     if (nodeText && PREFIX.test(nodeText) && SUFFIX_SINGLE.test(nodeText)) {
       const newNode = createNewNode(node, parent)
-      replaceNode(parent, newNode)
       node.value = nodeText.slice(nodeText.indexOf('\n') + 1, -4)
+      const newParagraph = {
+        type: 'paragraph',
+        children: [{ ...node }],
+      }
+      newNode.children = [newParagraph]
+      replaceNode(parent, newNode)
 
       return CONTINUE
     }
@@ -63,7 +68,8 @@ export const visitor =
     }
     if (nodeText && SUFFIX_MULTIPLE.test(nodeText)) {
       const startIndex = stack.pop()
-      if (startIndex) mergeNodes(startIndex, parentIndex, parents)
+      if (typeof startIndex === 'undefined') return
+      mergeNodes(startIndex, parentIndex, parents)
     }
   }
 
