@@ -63,7 +63,8 @@ export const visitor =
     }
     if (nodeText && SUFFIX_MULTIPLE.test(nodeText)) {
       const startIndex = stack.pop()
-      if (startIndex) mergeNodes(startIndex, parentIndex, parents)
+      if (typeof startIndex === 'undefined') return
+      mergeNodes(startIndex, parentIndex, parents)
     }
   }
 
