@@ -1,6 +1,7 @@
 import { Container, Divider, Heading, Stack, Text } from '@chakra-ui/react'
 import { GetStaticPaths, GetStaticProps } from 'next'
 import Head from 'next/head'
+import Script from 'next/script'
 import type { Post } from '../../modules'
 import { Datetime } from '@/components/Datetime'
 import { Header } from '@/components/Header'
@@ -31,6 +32,10 @@ const Post = ({ postData }: Props) => {
         </Stack>
         <MarkdownPemplate source={postData.contentHtml} />
       </Container>
+      <Script
+        src="https://platform.twitter.com/widgets.js"
+        strategy="lazyOnload"
+      />
     </>
   )
 }
