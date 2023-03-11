@@ -29,12 +29,16 @@ import {
   AlertIcon,
   useClipboard,
   Button,
+  useColorMode,
 } from '@chakra-ui/react'
 import hljs from 'highlight.js'
 import parse from 'html-react-parser'
 import { domToReact, HTMLReactParserOptions } from 'html-react-parser'
 import 'highlight.js/styles/github-dark-dimmed.css'
+import { Tweet } from './Tweet'
 import CopyButton from './copy-button'
+
+const TweetURLReg = /https?:\/\/(www\.)?twitter.com\/(\w{1,15})\/status\/(.*)/
 
 const h1 = {
   props: {
@@ -215,6 +219,13 @@ const options: HTMLReactParserOptions = {
         )
       }
       if (domNode.name === 'p') {
+        const child = domNode.children[0]
+        if (domNode.children.length === 1 && child.name === 'a') {
+          if (TweetURLReg.test(child.attribs.href)) {
+            const m = child.attribs.href.match(TweetURLReg)
+            return <Tweet name={m?.[2]} id={m?.[3]} theme="light" />
+          }
+        }
         return <Text {...p.props}>{domToReact(domNode.children, options)}</Text>
       }
       if (domNode.name === 'blockquote') {
